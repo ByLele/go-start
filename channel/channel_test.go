@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
 )
 
 /*func TestChannel(t *testing.T) {
@@ -101,7 +102,7 @@ func TestGorou(t *testing.T) {
 func getMessage(order string, delay time.Duration) chan string {
 	c := make(chan string)
 	go func() {
-		for i := 1; i < 3; i++ {
+		for i := 1; i <= 3; i++ {
 			c <- fmt.Sprintf("%s %d", order, i)
 			time.Sleep(delay)
 		}
@@ -109,13 +110,23 @@ func getMessage(order string, delay time.Duration) chan string {
 	return c
 }
 func TestMultiChannel(t *testing.T) {
-	c1 := getMessage("first", 30)
+	c1 := getMessage("first", 300)
 	c2 := getMessage("second", 150)
 	c3 := getMessage("third", 100)
 
-	for i := 1; i < 3; i++ {
-		fmt.Println(<-c1)
-		fmt.Println(<-c2)
-		fmt.Println(<-c3)
+	//for i := 1; i < 3; i++ {
+	//	fmt.Println(<-c1)
+	//	fmt.Println(<-c2)
+	//	fmt.Println(<-c3)
+	//}
+	for i := 1; i <= 9; i++ {
+		select {
+		case msg := <-c1:
+			fmt.Println(msg)
+		case msg := <-c2:
+			fmt.Println(msg)
+		case msg := <-c3:
+			fmt.Println(msg)
+		}
 	}
 }
